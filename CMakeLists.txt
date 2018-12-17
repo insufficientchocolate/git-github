@@ -16,12 +16,21 @@ hunter_add_package(libgit2)
 
 find_package(CURL CONFIG REQUIRED)
 find_package(CLI11 CONFIG REQUIRED)
-find_package(LIBGIT2 CONFIG REQUIRED)
-
+find_package(libgit2 CONFIG REQUIRED)
 
 add_executable(
-	git-github
+	"${CMAKE_PROJECT_NAME}"
 	main.cc
 )
 
-target_link_libraries(git-github CLI11::CLI11 LIBGIT2::libgit2)
+include(GNUInstallDirs)
+#set(generated_dir "${CMAKE_CURRENT_BINARY_DIR}/generated")
+#set(config_install_dir "${CMAKE_INSTALL_LIBDIR}/cmake/${CMAKE_PROJECT_NAME}")
+#set(project_config "${generated_dir}/${CMAKE_PROJECT_NAME}Config.cmake")
+
+install(TARGETS "${CMAKE_PROJECT_NAME}"
+	RUNTIME DESTINATION "${CMAKE_INSTALL_BINDIR}"
+)
+
+
+target_link_libraries(git-github CLI11::CLI11 libgit2::git2)
