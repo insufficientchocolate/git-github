@@ -1,6 +1,7 @@
 cmake_minimum_required(VERSION 3.2)
 
 include(cmake/HunterGate.cmake)
+set(CMAKE_CXX_STANDARD 11)
 
 HunterGate(
     URL "https://github.com/ruslo/hunter/archive/v0.23.58.tar.gz"
@@ -21,6 +22,8 @@ find_package(libgit2 CONFIG REQUIRED)
 add_executable(
 	"${CMAKE_PROJECT_NAME}"
 	main.cc
+    repository.cc
+    repository.hpp
 )
 
 include(GNUInstallDirs)
