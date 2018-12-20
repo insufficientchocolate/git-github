@@ -52,7 +52,7 @@ find_program(
 if(CLANG_FORMAT_COMMAND)
     set(DO_CLANG_FORMAT "${CLANG_FORMAT_COMMAND}" "-i -style=google")
     add_custom_target(
-        format
+        format ALL
         "${CLANG_FORMAT_COMMAND}" -i -style=google ${sources_abs}
     )
 endif()

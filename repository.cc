@@ -4,7 +4,7 @@ namespace github {
 Repository::Repository(const char *path)
     : repository_(nullptr, git_repository_free) {
   git_repository *repo;
-  if (git_repository_init(&repo, path, false)) {
+  if (git_repository_open(&repo, path)) {
     const git_error *err = giterr_last();
     std::string message("failed to init repository: ");
     message.append(err->message);
