@@ -19,21 +19,40 @@ find_package(CURL CONFIG REQUIRED)
 find_package(CLI11 CONFIG REQUIRED)
 find_package(libgit2 CONFIG REQUIRED)
 
-add_executable(
-	"${CMAKE_PROJECT_NAME}"
-	main.cc
+set(
+    sources
+    main.cc
     repository.cc
     repository.hpp
 )
 
+foreach(i IN LISTS sources)
+    list(APPEND sources_abs "${CMAKE_CURRENT_SOURCE_DIR}/${i}")
+endforeach()
+
+add_executable(
+	"${CMAKE_PROJECT_NAME}"
+    ${sources}
+)
+
 include(GNUInstallDirs)
-#set(generated_dir "${CMAKE_CURRENT_BINARY_DIR}/generated")
-#set(config_install_dir "${CMAKE_INSTALL_LIBDIR}/cmake/${CMAKE_PROJECT_NAME}")
-#set(project_config "${generated_dir}/${CMAKE_PROJECT_NAME}Config.cmake")
 
 install(TARGETS "${CMAKE_PROJECT_NAME}"
 	RUNTIME DESTINATION "${CMAKE_INSTALL_BINDIR}"
 )
 
-
 target_link_libraries(git-github CLI11::CLI11 libgit2::git2)
+
+find_program(
+    CLANG_FORMAT_COMMAND
+    NAMES "clang-format"
+    DOC "Path to clang-format"
+)
+
+if(CLANG_FORMAT_COMMAND)
+    set(DO_CLANG_FORMAT "${CLANG_FORMAT_COMMAND}" "-i -style=google")
+    add_custom_target(
+        format
+        "${CLANG_FORMAT_COMMAND}" -i -style=google ${sources_abs}
+    )
+endif()
