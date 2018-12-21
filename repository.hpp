@@ -13,7 +13,7 @@ class Repository {
  public:
   Repository(const char* path);
   std::shared_ptr<git_reference> getHead();
-  std::string getHeadOID();
+  std::string getHeadSHA();
   static void throwGitError(std::string prefixMessage = "");
 
  private:
