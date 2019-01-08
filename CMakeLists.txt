@@ -22,6 +22,9 @@ find_package(libgit2 CONFIG REQUIRED)
 set(
     sources
     main.cc
+    git.cc
+    git.hpp
+    git_access.hpp
     repository.cc
     repository.hpp
 )
@@ -50,7 +53,6 @@ find_program(
 )
 
 if(CLANG_FORMAT_COMMAND)
-    set(DO_CLANG_FORMAT "${CLANG_FORMAT_COMMAND}" "-i -style=google")
     add_custom_target(
         format ALL
         "${CLANG_FORMAT_COMMAND}" -i -style=google ${sources_abs}

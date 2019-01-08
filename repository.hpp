@@ -8,13 +8,13 @@
 #include <array>
 #include <memory>
 #include <string>
+#include "git_access.hpp"
 namespace github {
-class Repository {
+class Repository : private GitAccess {
  public:
   Repository(const char* path);
   std::shared_ptr<git_reference> getHead();
   std::string getHeadSHA();
-  static void throwGitError(std::string prefixMessage = "");
 
  private:
   std::unique_ptr<git_repository, decltype(&git_repository_free)> repository_;

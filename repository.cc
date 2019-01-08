@@ -1,9 +1,7 @@
 #include "repository.hpp"
-
 namespace github {
 Repository::Repository(const char *path)
     : repository_(nullptr, git_repository_free) {
-  git_libgit2_init();
   git_repository *repo;
   if (git_repository_open(&repo, path)) {
     const git_error *err = giterr_last();
@@ -31,17 +29,9 @@ std::string Repository::getHeadSHA() {
 std::shared_ptr<git_reference> Repository::getHead() {
   git_reference *out;
   if (git_repository_head(&out, repository_.get())) {
-    throwGitError();
+    Git::throwError();
   }
   return std::shared_ptr<git_reference>(out, git_reference_free);
 }
 
-void Repository::throwGitError(std::string prefix) {
-  const git_error *err = giterr_last();
-  if (!err) {
-    return;
-  }
-  prefix.append(err->message);
-  throw std::runtime_error(prefix);
-}
 };  // namespace github
